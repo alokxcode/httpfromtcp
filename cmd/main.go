@@ -8,6 +8,8 @@ import (
 )
 
 func main() {
+/* 	server := hello_http.NewServer() */
+
 	fmt.Println("Hello world")
 	listen_addr := ":4000"
 	listener, err := net.Listen("tcp", listen_addr)
