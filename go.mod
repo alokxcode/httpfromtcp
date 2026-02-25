@@ -1,3 +1,3 @@
-module github.com/alokxcode/http_from_tcp
+module github.com/alokxcode/httpfromtcp
 
 go 1.22.2
