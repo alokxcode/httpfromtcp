@@ -10,7 +10,7 @@ import (
 func HandleConnection(conn net.Conn) {
 	for {
 		// create a buffer to store the req msg temporarily to read
-		buff := make([]byte, 20)
+		buff := make([]byte, 2000)
 
 		// read the req and write it in buffer
 		n, err := conn.Read(buff)
@@ -22,6 +22,7 @@ func HandleConnection(conn net.Conn) {
 		return 
 		}
 		req := string(buff[:n])
+		fmt.Println(req)
 		parsed_req := parser.Parse_Request(req)
 		parser.Response(conn, parsed_req)
 
