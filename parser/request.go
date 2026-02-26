@@ -1,7 +1,8 @@
-package hello_http
+package parser
 
 import (
 	"strings"
+	"fmt"
 )
 
 type Req struct {
@@ -30,8 +31,8 @@ func Parse_Request(req string) Req {
 
 	}
 
-	// fmt.Println(header_map["Host"])
-	// fmt.Println(header_map["Connection"])
+	fmt.Println(header_map["Host"])
+	fmt.Println(header_map["Connection"])
 
 	parsed_req := &Req{
 		Method:  firstline[0],

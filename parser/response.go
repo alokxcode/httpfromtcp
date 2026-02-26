@@ -1,4 +1,4 @@
-package hello_http
+package parser
 
 import (
 	"fmt"
@@ -28,5 +28,5 @@ func Response(conn net.Conn, req_firstLine Req) {
 	msg_length := len(msg)
 
 	res := fmt.Sprintf("HTTP/1.1 %v %v\r\nContent-Length: %v\r\n\r\n%v", s_code, s_msg, msg_length, msg)
-	conn.Write([]byte(res))
+	conn.Write([]byte(res)) 
 }
