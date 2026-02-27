@@ -3,9 +3,20 @@ package parser
 import (
 	"fmt"
 	"net"
+	"github.com/alokxcode/httpfromtcp/types"
 )
 
-func Response(conn net.Conn, req_firstLine Req) {
+type ResponseWriter struct {
+	res *types.Res
+	conn net.Conn
+}
+
+func (rw *ResponseWriter) Write(body string) {
+	rw.res.Body = body 
+	rw.res.StatusCode = 200
+} 
+
+func Response(conn net.Conn, req_firstLine types.Req) {
 	var msg string
 	var s_code int
 	var s_msg string

@@ -3,17 +3,12 @@ package parser
 import (
 	"strings"
 	"fmt"
+	"github.com/alokxcode/httpfromtcp/types"
 )
 
-type Req struct {
-	Method  string
-	Path    string
-	Version string
-	Header  map[string]any
-	Body    string
-}
 
-func Parse_Request(req string) Req {
+
+func Parse_Request(req string) types.Req {
 
 	fullHeader, content_body, _ := strings.Cut(req, "\r\n\r\n")
 	fullHeader_slice := strings.Split(fullHeader, "\r\n")
@@ -34,7 +29,7 @@ func Parse_Request(req string) Req {
 	fmt.Println(header_map["Host"])
 	fmt.Println(header_map["Connection"])
 
-	parsed_req := &Req{
+	parsed_req := &types.Req{
 		Method:  firstline[0],
 		Path:    firstline[1],
 		Version: firstline[2],
