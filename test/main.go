@@ -1,16 +1,14 @@
 package main
 
-import (
-	"fmt"
+import "github.com/alokxcode/httpfromtcp"
 
-	"github.com/alokxcode/httpfromtcp/parser"
-	"github.com/alokxcode/httpfromtcp/server"
-	"github.com/alokxcode/httpfromtcp/types"
-)
- 
-func main () {
-	fmt.Println("server starting")
-	router := server.NewServer()
-	router.Handle("GET /", func(req types.Req, res parser.ResponseWriter) {})
-	router.Listen(":4000")
+func main() {
+	router := httpfromtcp.NewServer()
+
+	router.Handle("GET /", func(r httpfromtcp.Req, w *httpfromtcp.ResponseWriter) { w.Write("Hello")})
+
+	router.Handle("GET /about", func(r httpfromtcp.Req, w *httpfromtcp.ResponseWriter) { w.Write("Hello from about page")})
+
+	router.Handle("GET /service", func(r httpfromtcp.Req, w *httpfromtcp.ResponseWriter) { w.Write("service page")})
+	router.ListenAndServe(":4000")
 }

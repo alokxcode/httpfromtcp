@@ -1,4 +1,4 @@
-package types
+package httpfromtcp
 
 type Error struct {
 	Msg string
