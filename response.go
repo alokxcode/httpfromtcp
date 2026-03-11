@@ -3,11 +3,14 @@ package httpfromtcp
 import (
 	"fmt"
 	"net"
+	"strings"
 )
+
+	
 
 type Res struct {
 	StatusCode int
-	Header     map[string]string
+	Header    Header 
 	Body       string
 }
 
@@ -17,18 +20,30 @@ type ResponseWriter struct {
 }
 
 func (rw *ResponseWriter) Write(body string) {
-	var s_msg string
-
+	var sb strings.Builder
 
 	rw.res.Body = body
-	rw.res.StatusCode = 200
-	s_msg = "OK"
-
+	SetReasonPhrase(rw.res.StatusCode)
 	msg_length := len(rw.res.Body)
+	rw.res.Header["Content-Length"] = msg_length
 
-	res := fmt.Sprintf("HTTP/1.1 %v %v\r\nContent-Length: %v\r\n\r\n%v", rw.res.StatusCode, s_msg, msg_length, rw.res.Body)
+	for key,value := range rw.res.Header {
+		sb.WriteString(fmt.Sprintf("%v: %v\r\n", key, value))
+	}
+
+	fmt.Println("content type", rw.res.Header["Content-Type"])
+	res := fmt.Sprintf("HTTP/1.1 %v %v\r\n%v\r\n%v", rw.res.StatusCode, ReasonPhrase,sb.String(), rw.res.Body)
 	rw.conn.Write([]byte(res))
 }
+func (rw *ResponseWriter) Header() Header {
+	return rw.res.Header
+}  
+
+func (rw *ResponseWriter) WriteHeader(status_code int) {
+	rw.res.StatusCode = status_code
+}
+
+
 //
 // func Response(conn net.Conn, req_firstLine *Req) {
 // 	switch req_firstLine.Path {
