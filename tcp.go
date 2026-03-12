@@ -20,7 +20,7 @@ func Listener(server *Server, listen_addr string) Error {
 	// listener should run in infinite loop to listen all incoming request - all time
 	for {
 		// when req come, listener will accept it
-		fmt.Println("Listening on port")
+		fmt.Println("Listening on port : ",server.Listen_addr)
 		conn, err := listener.Accept()
 		fmt.Println("conn accepted", conn)
 		if err != nil {
@@ -38,7 +38,7 @@ func Listener(server *Server, listen_addr string) Error {
 
 func HandleConnection(server *Server, conn net.Conn) Req {
 	for {
-		fmt.Println("handling connection")
+		fmt.Println("handling connection : ", conn)
 		// pass/set conn to server struct 
 		server.res_writer.conn = conn
 		// initialisation of header map
@@ -57,13 +57,12 @@ func HandleConnection(server *Server, conn net.Conn) Req {
 		}
 		req := string(buff[:n])
 		parsed_req := Parse_Request(req)
-		fmt.Println(parsed_req)
 		fn := MatchRoutes(parsed_req, server)
 		
 		if fn == nil {
 			continue
 		}
-		fn(*parsed_req,&server.res_writer)
+		fn(parsed_req,&server.res_writer)
 		fmt.Println(server.res_writer.res.Body)
 
 	}

@@ -1,7 +1,6 @@
 package httpfromtcp
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -10,6 +9,7 @@ type Req struct {
 	Path    string
 	Version string
 	Header  map[string]any
+	PathValue map[string]any
 	Body    string
 }
 
@@ -31,8 +31,6 @@ func Parse_Request(req string) *Req {
 
 	}
 
-	fmt.Println(header_map["Host"])
-	fmt.Println(header_map["Connection"])
 
 	parsed_req := &Req{
 		Method:  requestLine[0],

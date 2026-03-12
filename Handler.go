@@ -1,15 +1,42 @@
 package httpfromtcp
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
+
 
 
 func MatchRoutes(req *Req , server *Server) HandleFunc {
+	var matched bool = false
 	methodPath :=  req.Method + " " + req.Path
-	fmt.Println(methodPath)
-	fmt.Print(server.Routes[methodPath])
-	if f, ok := server.Routes[methodPath]; ok {
-		fmt.Println("route matched")
-		return f
+	method_Path_slice := strings.Split(methodPath,"/")
+	// looping over the route map
+	for key,value := range server.Routes {
+		// spiliting the method_path/key
+		key_slice := strings.Split(key,"/")
+
+		req.PathValue = make(map[string]any)
+
+	// looping over key slice
+		for i := range key_slice {
+			k_length := len(key_slice[i])
+			if k_length == 0 {
+				continue
+			}
+			
+			fmt.Printf("key : %v || length: %v\n",key_slice[i],k_length)
+			if key_slice[i][0] == 123 {
+				req.PathValue[key_slice[i][1:k_length -1]] = method_Path_slice[i]
+				continue
+			}
+			if method_Path_slice[i] == key_slice[i] {
+				matched = true
+			}
+		}
+		if matched == true {
+			return value
+		} 
 	}
 	return nil
 

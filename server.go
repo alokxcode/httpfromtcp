@@ -8,7 +8,7 @@ type Server struct {
 	res_writer ResponseWriter
 }
 
-type HandleFunc func(Req, *ResponseWriter)
+type HandleFunc func(*Req, *ResponseWriter)
 
 func NewServer() Server {
 	server := &Server{
