@@ -5,7 +5,6 @@ import "fmt"
 type Server struct {
 	Listen_addr string
 	Routes      map[string]HandleFunc
-	res_writer ResponseWriter
 }
 
 type HandleFunc func(*Req, *ResponseWriter)

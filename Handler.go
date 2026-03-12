@@ -27,11 +27,14 @@ func MatchRoutes(req *Req , server *Server) HandleFunc {
 			
 			fmt.Printf("key : %v || length: %v\n",key_slice[i],k_length)
 			if key_slice[i][0] == 123 {
-				req.PathValue[key_slice[i][1:k_length -1]] = method_Path_slice[i]
+				req.PathValue[key_slice[i][1:k_length-1]] = method_Path_slice[i]
 				continue
 			}
 			if method_Path_slice[i] == key_slice[i] {
 				matched = true
+			} else {
+				matched = false
+				break
 			}
 		}
 		if matched == true {

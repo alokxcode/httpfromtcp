@@ -39,10 +39,12 @@ func Listener(server *Server, listen_addr string) Error {
 func HandleConnection(server *Server, conn net.Conn) Req {
 	for {
 		fmt.Println("handling connection : ", conn)
+		// initialisation of response writer
+		var res_writer ResponseWriter
 		// pass/set conn to server struct 
-		server.res_writer.conn = conn
+		res_writer.conn = conn
 		// initialisation of header map
-		server.res_writer.res.Header = make(map[string]any)
+		res_writer.res.Header = make(map[string]any)
 		// create a buffer to store the req msg temporarily to read
 		buff := make([]byte, 2000)
 
@@ -57,13 +59,14 @@ func HandleConnection(server *Server, conn net.Conn) Req {
 		}
 		req := string(buff[:n])
 		parsed_req := Parse_Request(req)
+		fmt.Println("REQUEST : ",parsed_req)
 		fn := MatchRoutes(parsed_req, server)
 		
 		if fn == nil {
 			continue
 		}
-		fn(parsed_req,&server.res_writer)
-		fmt.Println(server.res_writer.res.Body)
+		fn(parsed_req,&res_writer)
+		fmt.Println(res_writer.res.Body)
 
 	}
 
