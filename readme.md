@@ -44,59 +44,6 @@ func main() {
 
 ---
 
-## Routing
-
-Register routes using `method + path`:
-
-```go
-server.Handle("GET /users", listUsers)
-server.Handle("POST /users", createUser)
-server.Handle("DELETE /users/{id}", deleteUser)
-```
-
-### Dynamic path parameters
-
-Use `{param}` syntax to capture values from the URL:
-
-```go
-server.Handle("GET /users/{id}", func(req *httpfromtcp.Req, rw *httpfromtcp.ResponseWriter) {
-    id := req.PathValue["id"]
-    rw.WriteHeader(httpfromtcp.StatusOk)
-    rw.Write("User: " + id.(string))
-})
-```
-
----
-
-## Response
-
-### Status codes
-
-```go
-rw.WriteHeader(httpfromtcp.StatusOk)                  // 200
-rw.WriteHeader(httpfromtcp.StatusCreated)             // 201
-rw.WriteHeader(httpfromtcp.StatusBadRequest)          // 400
-rw.WriteHeader(httpfromtcp.StatusNotFound)            // 404
-rw.WriteHeader(httpfromtcp.StatusInternalServerError) // 500
-```
-
-### Headers
-
-```go
-rw.Header().Set("Content-Type", "application/json")
-rw.Header().Set("X-Request-Id", "abc123")
-```
-
-### Body
-
-```go
-rw.Write(`{"message": "ok"}`)
-```
-
-`Content-Length` is set automatically.
-
----
-
 ## Project structure
 
 ```
