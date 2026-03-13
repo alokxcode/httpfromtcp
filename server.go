@@ -9,6 +9,7 @@ type Server struct {
 
 type HandleFunc func(*Req, *ResponseWriter)
 
+// NewServer
 func NewServer() Server {
 	server := &Server{
 		Routes: make(map[string]HandleFunc),
@@ -17,13 +18,14 @@ func NewServer() Server {
 
 }
 
-
+// Handle
 func (server *Server) Handle(method_path string, handlefunc HandleFunc) {
 	fmt.Println("routes starting to registering")
 	server.Routes[method_path] = handlefunc
 	fmt.Println("routes registered")
 }
 
+// ListenAndServe
 func (server *Server) ListenAndServe(listen_addr string) {
 	fmt.Println("Server starting")
 	server.Listen_addr = listen_addr

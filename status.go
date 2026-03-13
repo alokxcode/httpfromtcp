@@ -15,7 +15,7 @@ func SetReasonPhrase(status_code int) string {
 		ReasonPhrase = "Created"
 	case 400:
 		ReasonPhrase = "Bad Request"
-	case 401:
+	case 404:
 		ReasonPhrase = "Not Found"
 	case 500:
 		ReasonPhrase = "Internal Server Error"

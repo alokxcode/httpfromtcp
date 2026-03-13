@@ -20,19 +20,29 @@ type ResponseWriter struct {
 }
 
 func (rw *ResponseWriter) Write(body string) {
+
+	// defines string builder
 	var sb strings.Builder
 
+	// sets body in response struct
 	rw.res.Body = body
+
+	// sets reason phrase based on status code 
 	SetReasonPhrase(rw.res.StatusCode)
+
+	// sets body length to res header 
 	msg_length := len(rw.res.Body)
 	rw.res.Header["Content-Length"] = msg_length
-
+	
+	// gives a http formated header string
 	for key,value := range rw.res.Header {
 		sb.WriteString(fmt.Sprintf("%v: %v\r\n", key, value))
 	}
 
-	fmt.Println("content type", rw.res.Header["Content-Type"])
+	// gives a http formated response string
 	res := fmt.Sprintf("HTTP/1.1 %v %v\r\n%v\r\n%v", rw.res.StatusCode, ReasonPhrase,sb.String(), rw.res.Body)
+
+	// writes the response to the connection
 	rw.conn.Write([]byte(res))
 }
 func (rw *ResponseWriter) Header() Header {
@@ -44,21 +54,3 @@ func (rw *ResponseWriter) WriteHeader(status_code int) {
 }
 
 
-//
-// func Response(conn net.Conn, req_firstLine *Req) {
-// 	switch req_firstLine.Path {
-// 	case "/":
-// 		msg = "Hello World!"
-// 		s_code = 200
-// 		s_msg = "OK"
-// 	case "/about":
-// 		msg = "About Page"
-// 		s_code = 200
-// 		s_msg = "OK"
-// 	default:
-// 		msg = "404 Page not found"
-// 		s_code = 404
-// 		s_msg = "ERROR"
-//
-// 	}
-// }

@@ -8,17 +8,23 @@ import (
 
 
 func MatchRoutes(req *Req , server *Server) HandleFunc {
+
+	// initialises matched variable with false value
 	var matched bool = false
+
+	// gives method path
 	methodPath :=  req.Method + " " + req.Path
+
+	// splits method path by /
 	method_Path_slice := strings.Split(methodPath,"/")
-	// looping over the route map
+
 	for key,value := range server.Routes {
-		// spiliting the method_path/key
+		// spilits the method_path/key
 		key_slice := strings.Split(key,"/")
 
+		// initialises the PathValue map
 		req.PathValue = make(map[string]any)
 
-	// looping over key slice
 		for i := range key_slice {
 			k_length := len(key_slice[i])
 			if k_length == 0 {

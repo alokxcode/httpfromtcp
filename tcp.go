@@ -7,9 +7,8 @@ import (
 
 func Listener(server *Server, listen_addr string) Error {
 
-	// net.Listen returns a Listener that listens for tcp requests on a port
+	// defines the listener
 	listener, err := net.Listen("tcp", listen_addr)
-	fmt.Println("listener is ready")
 	if err != nil {
 		return Error{
 			Msg: "Error while listening tcp",
@@ -17,10 +16,11 @@ func Listener(server *Server, listen_addr string) Error {
 		}
 	}
 
-	// listener should run in infinite loop to listen all incoming request - all time
+	// Running listener in infinite for loop - to accect requests
 	for {
-		// when req come, listener will accept it
+
 		fmt.Println("Listening on port : ",server.Listen_addr)
+		// accepts the request
 		conn, err := listener.Accept()
 		fmt.Println("conn accepted", conn)
 		if err != nil {
@@ -36,42 +36,34 @@ func Listener(server *Server, listen_addr string) Error {
 
 }
 
-func HandleConnection(server *Server, conn net.Conn) Req {
+func HandleConnection(server *Server, conn net.Conn) {
 	for {
-		fmt.Println("handling connection : ", conn)
-		// initialisation of response writer
+		// initialises the response writer
 		var res_writer ResponseWriter
-		// pass/set conn to server struct 
+		// sets conn to server struct 
 		res_writer.conn = conn
-		// initialisation of header map
+		// initialises the header map
 		res_writer.res.Header = make(map[string]any)
-		// create a buffer to store the req msg temporarily to read
+		// creates a buffer to store the req msg temporarily to read
 		buff := make([]byte, 2000)
 
-		// read the req and write it in buffer
+		// reads the req and write it in buffer
 		n, err := conn.Read(buff)
 		if err != nil {
-			// 	return types.Error {
-			// 		Msg : "Error while reading connection",
-			// 		Err : err,
-			// 	}
-			return Req{}
+			return
 		}
 		req := string(buff[:n])
+		// parses the req
 		parsed_req := Parse_Request(req)
-		fmt.Println("REQUEST : ",parsed_req)
+		// matchs the routes
 		fn := MatchRoutes(parsed_req, server)
 		
 		if fn == nil {
 			continue
 		}
+		// executes the function
 		fn(parsed_req,&res_writer)
-		fmt.Println(res_writer.res.Body)
 
 	}
 
 }
-//
-// func WriteBytes(conn net.Conn, msg string) {
-//
-// }
