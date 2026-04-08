@@ -7,7 +7,6 @@ HTTP server library built from scratch in Go, on top of raw TCP — no net/http 
 ## What you can build
 
 - **REST APIs** — full CRUD with dynamic routes
-- **Static file servers** — read files from disk, serve over HTTP
 - **Webhooks** — listen for POST requests from external services
 - **Local dev tools** — lightweight server for local tooling or CLIs
 - **Learning projects** — understand HTTP at the wire level by reading the source
